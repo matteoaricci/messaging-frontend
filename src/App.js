@@ -27,7 +27,7 @@ function App() {
         <NavBar />
         <Switch>
         <Route exact path='/' render={(props) => (<WelcomePage handleLogin={handleLogin}/>)}/>
-        <Route exact path='/home' component={Home}/> 
+        <Route exact path='/home' render={(props) => (<Home user={user}/>)}/> 
         </Switch>
       </div>
     </Router>
