@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SelectedRoom from '../components/SelectedRoom'
+import ActionCable from 'actioncable'
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid';
@@ -8,19 +9,18 @@ class RoomContainer extends Component {
     constructor() {
         super();
         this.state = {
+            consumer: 'undefined',
             rooms: [],
-            // roomNumber: '',
-            // topic: '',
-            selectedRoom: ''
+            selectedRoom: '',
+            chatHistory: []
         }
     }
     componentDidMount() {
-        
         fetch('http://localhost:3000/rooms')
         .then(resp => resp.json())
         .then(room => this.setState({rooms: room}))
     }
-
+    
     handleSubmit = event => {
         event.preventDefault();
         fetch('http://localhost:3000/rooms', {
@@ -36,17 +36,41 @@ class RoomContainer extends Component {
         .then(resp => resp.json())
         .then(room => this.setState({rooms: [...this.state.rooms, room]}))
     }
-
+    
     handleOnChange = event => {
         this.setState({[event.target.name]: event.target.value})
     }
 
-    handleOnClick = (event) => {
-        this.setState({selectedRoom: event.currentTarget.id})
+    sendMessageToServer = (message, event) => {
+        event.preventDefault();
+        this.subscription.send({
+            text: message,
+            userId: this.props.user
+        })
     }
+    
+    handleOnClick = (event) => {
 
-    render() {
-        return (
+        if ( this.state.consumer !== 'undefined' ) {
+                this.subscription.unsubscribe()
+            }
+
+        this.setState({selectedRoom: event.currentTarget.id, chatHistory: []})
+        const consumer = ActionCable.createConsumer('ws://localhost:3000/cable')
+        this.subscription =  consumer.subscriptions.create({channel: "ForumChannel", room: event.currentTarget.id},
+        {received: (message) => console.log(message)}
+            // this.setState({chatHistory: [...this.state.chatHistory, message]})}
+        )
+        this.setState({consumer: 'exists'})
+        console.log(this.state.selectedRoom) 
+
+        
+
+        }
+
+        
+        render() {
+            return (
             <div className="room-container">
                 <div className="existing-rooms">
                     <Grid
@@ -71,7 +95,7 @@ class RoomContainer extends Component {
 
                 <div className="selected-room">
                     {this.state.selectedRoom === '' ? <h5 className='no-room-header'>Select a Room!</h5> :
-                    <SelectedRoom user={this.props.user} room={this.state.selectedRoom}/>
+                    <SelectedRoom user={this.props.user}  sendMessageToServer={this.sendMessageToServer} room={this.state.selectedRoom}/>
                     }
                 </div>
             </div>

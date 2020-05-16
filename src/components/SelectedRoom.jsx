@@ -9,16 +9,17 @@ class SelectedRoom extends Component {
         super();
         this.state = {
             data: '',
-            newMessage: ''
+            newMessage: '',
+            currentChat: []
         }
     }
 
     componentDidMount() {
-        this.setState({newMessage: ''})
-        const consumer = ActionCable.createConsumer('ws://localhost:3000/cable')
-        this.subscription =  consumer.subscriptions.create({channel: "RoomChannel", room: this.props.room},
-        {received: (message) => this.setState({data: message})}
-        )
+        
+        // const consumer = ActionCable.createConsumer('ws://localhost:3000/cable')
+        // this.subscription =  consumer.subscriptions.create({channel: "ForumChannel", room: this.props.room},
+        // {received: (message) => this.setState({chatHistory: [...this.state.chatHistory, message]})}
+        // )
     }
 
     handleOnChange = (event) => {
@@ -48,7 +49,7 @@ class SelectedRoom extends Component {
         // make it so a person can send a message to the room via a message
         return (
             <div>
-                 <form onSubmit={this.handleSubmit}>
+                 <form onSubmit={event => this.props.sendMessageToServer(this.state.newMessage, event)}>
                         <Input onChange={event =>this.handleOnChange(event)} value={this.state.newMessage} placeholder='Message' name="newMessage" type="text"/><br></br>
                         <Button type='submit'>Send</Button>
                     </form>
