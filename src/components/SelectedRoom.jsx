@@ -28,25 +28,8 @@ class SelectedRoom extends Component {
         })
     }
 
-    handleSubmit = event => {
-        event.preventDefault();
-        fetch('http://localhost:3000/messages', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                room_id: this.props.room,
-                user_id: this.props.user,
-                content: this.state.newMessage
-            })
-        })
-    }
-
     
     render() {
-        //mount action cable to go get messages with room id
-        // make it so a person can send a message to the room via a message
         return (
             <div>
                  <form onSubmit={event => this.props.sendMessageToServer(this.state.newMessage, event)}>
