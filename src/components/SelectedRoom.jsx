@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ActionCable from 'actioncable'
 import Button from '@material-ui/core/Button'
 import Input from '@material-ui/core/Input'
+import '../css/room-container.css'
 
 class SelectedRoom extends Component {
 

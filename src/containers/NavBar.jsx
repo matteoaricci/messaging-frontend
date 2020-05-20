@@ -7,7 +7,10 @@ class NavBar extends Component {
     render() {
         return (
             <AppBar position='static' title='Howdy!'>
-                
+                <Tabs>
+                    <Tab>
+                    </Tab>
+                </Tabs>
             </AppBar>
         );
     }

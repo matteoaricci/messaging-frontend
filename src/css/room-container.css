@@ -1,8 +1,37 @@
 .message-container {
     float: right;
     width: 60%;
+    margin: 2em;
+    height: 50rem;
+    overflow-y: scroll;
+    
 }
 
 .form-listing {
     float: left;
+    margin: 2em;
+    width: 30%;
+}
+
+.new-room-form {
+    border-style: double;
+    border-top: none;
+    border-color: blue;
+    border-radius: 0rem 0rem 1rem 1rem;
+}
+
+h3 {
+    background-color: aquamarine;
+}
+
+.existing-rooms {
+    border-style: double;
+    border-top: none;
+    border-color: blue;
+    border-radius: 0rem 0rem 1rem 1rem;
+}
+
+Button {
+    width: 100%;
+    margin-right: 100%;
 }

@@ -94,7 +94,7 @@ class RoomContainer extends Component {
             <div className="room-container">
                 <div className="form-listing">
                     <div className="existing-rooms">
-                        <h5 className="existing-rooms-header">Existing Rooms!</h5>
+                        <h3 className="existing-rooms-header">Existing Rooms!</h3>
                         <Grid
                         container
                         direction="column"
@@ -106,17 +106,17 @@ class RoomContainer extends Component {
                     </div>
 
                     <div className="new-room-form">
-                        <h5 className="new-room-form-header">Don't See a Topic You Like?</h5>
+                        <h3 className="new-room-form-header">Don't See a Topic You Like?</h3>
                         <form onSubmit={this.handleSubmit}>
                             <Input onChange={event=> this.handleOnChange(event)} value={this.state.topic} placeholder='Pick a Topic!' name='topic' type="text"/><br></br>
-                            <Button type='submit'>Make New Room</Button>
+                            <Button lableStyle={{'text-align': 'left'}} type='submit'>Make New Room</Button>
                         </form>
                     </div>
                 </div>
 
 
                 <div className="message-container">
-                    <h5 className="selected-room-header">Room Title</h5>
+                    <h3 className="selected-room-header">Room Title</h3>
                     <Grid
                     id='chat-history'
                     container
@@ -137,7 +137,7 @@ class RoomContainer extends Component {
                 
 
                
-                    {this.state.selectedRoom === '' ? <h5 className='no-room-header'>Select a Room!</h5> :
+                    {this.state.selectedRoom === '' ? <h4 className='no-room-header'>Select a Room!</h4> :
                     <SelectedRoom user={this.props.user}  sendMessageToServer={this.sendMessageToServer} room={this.state.selectedRoom}/>
                     }
                 </div>
