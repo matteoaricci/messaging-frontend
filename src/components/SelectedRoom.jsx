@@ -33,7 +33,7 @@ class SelectedRoom extends Component {
         return (
             <div>
                  <form onSubmit={event => this.props.sendMessageToServer(this.state.newMessage, event)}>
-                        <Input onChange={event =>this.handleOnChange(event)} value={this.state.newMessage} placeholder='Message' name="newMessage" type="text"/><br></br>
+                        <Input onChange={event =>this.handleOnChange(event)} value={this.state.newMessage} fullWidth='true' placeholder='Message' name="newMessage" type="text"/><br></br>
                         <Button type='submit'>Send</Button>
                     </form>
             </div>

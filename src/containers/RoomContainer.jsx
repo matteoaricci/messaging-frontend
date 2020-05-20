@@ -4,6 +4,9 @@ import ActionCable from 'actioncable'
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper'
+
+import '../css/room-container.css'
 
 class RoomContainer extends Component {
     constructor() {
@@ -69,7 +72,7 @@ class RoomContainer extends Component {
             this.setState({selectedRoom: call})
             const consumer = ActionCable.createConsumer('ws://localhost:3000/cable')
             this.subscription =  consumer.subscriptions.create({channel: "ForumChannel", room: call},
-            {received: (data) =>  
+            {received: (data) => 
                 this.setState({chatHistory: [...this.state.chatHistory, data]})
         }
                
@@ -82,33 +85,50 @@ class RoomContainer extends Component {
         render() {
             return (
             <div className="room-container">
-                <div className="existing-rooms">
+                <div className="form-listing">
+                    <div className="existing-rooms">
+                        <h5 className="existing-rooms-header">Existing Rooms!</h5>
+                        <Grid
+                        container
+                        direction="column"
+                        justify="flex-start"
+                        alignItems="flex-start">
+                        {this.state.rooms.length === 0 ?<h1 className="no-room-header">No Rooms Yet...</h1>: null}
+                        {this.state.rooms.map(room => <Button onClick={this.handleOnClick} key={room.id} id={room.id} className="room-btn">{room.room_number}: {room.topic}</Button>)}
+                        </Grid>
+                    </div>
+
+                    <div className="new-room-form">
+                        <h5 className="new-room-form-header">Don't See a Topic You Like?</h5>
+                        <form onSubmit={this.handleSubmit}>
+                            <Input onChange={event=> this.handleOnChange(event)} value={this.state.topic} placeholder='Pick a Topic!' name='topic' type="text"/><br></br>
+                            <Button type='submit'>Make New Room</Button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div className="message-container">
+                    <h5 className="selected-room-header">Room Title</h5>
                     <Grid
                     container
                     direction="column"
                     justify="flex-start"
                     alignItems="flex-start">
-                    <h5 className="existing-rooms-header">Existing Rooms!</h5>
-                    {this.state.rooms.length === 0 ?<h1 className="no-room-header">No Rooms Yet...</h1>: null}
-                    {this.state.rooms.map(room => <Button onClick={this.handleOnClick} key={room.id} id={room.id} className="room-btn">{room.room_number}: {room.topic}</Button>)}
+                        {this.state.chatHistory.map(chat => 
+                        <Grid container>
+                            <Grid item>
+                                <Paper>{chat.author}</Paper>
+                            </Grid>
+                            <Grid item>
+                                <Paper>{chat.message.content}</Paper>
+                            </Grid>
+                        </Grid>
+                        )}
                     </Grid>
-                </div>
+                
 
-                <div className="new-room-form">
-                    <h5 className="new-room-form-header">Don't See a Topic You Like?</h5>
-                    <form onSubmit={this.handleSubmit}>
-                        <Input onChange={event=> this.handleOnChange(event)} value={this.state.topic} placeholder='Pick a Topic!' name='topic' type="text"/><br></br>
-                        <Button type='submit'>Make New Room</Button>
-                    </form>
-                </div>
-
-                <div className="message-container">
-                    {/* {this.state.chatHistory.map(chat => 
-                        console.log(chat)
-                        )} */}
-                </div>
-
-                <div className="selected-room">
+               
                     {this.state.selectedRoom === '' ? <h5 className='no-room-header'>Select a Room!</h5> :
                     <SelectedRoom user={this.props.user}  sendMessageToServer={this.sendMessageToServer} room={this.state.selectedRoom}/>
                     }
