@@ -5,6 +5,7 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper'
+// import {animateScroll} from 'react-scroll'
 
 import '../css/room-container.css'
 
@@ -79,6 +80,12 @@ class RoomContainer extends Component {
             )
             this.setState({consumer: 'exists'})
     }
+
+    // scrollToBottom(){
+    //     animateScroll.scrollToBottom({
+    //         containerId: 'chat-history'
+    //     })
+    // }
         
 
         
@@ -111,6 +118,7 @@ class RoomContainer extends Component {
                 <div className="message-container">
                     <h5 className="selected-room-header">Room Title</h5>
                     <Grid
+                    id='chat-history'
                     container
                     direction="column"
                     justify="flex-start"
